@@ -177,7 +177,11 @@ def mpesa_checkout(request):
     email = request.POST.get('email', False)
     amount = request.POST.get('amount', False)
     print(amount)
-    payment_instance=PaymentsActivated(phone=phone,email=email,amount=amount)
+    if phone.startswith('0'):
+            phone = '254' + phone[1:]
+            print(phone)
+            
+    payment_instance=PaymentsActivated.objects.create(phone=phone,email=email,amount=amount)
     payment_instance.save()
     
     if int(amount) < 50:
@@ -219,7 +223,9 @@ def PaymentCallback(request):
     if data["state"] == "COMPLETE":
         try:
                 # Get or create credit balance for the account
-            email = data["account"]
+            phone = data["account"]
+            email=PaymentsActivated.objects.get(phone=phone).email
+
             user = CustomUser.objects.get(email=email)
 
                 # Get or create credit balance for the account

@@ -38,7 +38,7 @@ class ImageHistory(models.Model):
 
 class PaymentsActivated(models.Model):
     email=models.EmailField()
-    phone=models.IntegerField()
+    phone=models.BigIntegerField()
     amount=models.IntegerField()
 
     class Meta:
