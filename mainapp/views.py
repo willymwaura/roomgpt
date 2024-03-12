@@ -2,7 +2,7 @@
 from django.http import response
 from django.shortcuts import render
 import requests
-from mainapp.models import User  as CustomUser ,CreditBalance,PaymentsActivated
+from mainapp.models import User  as CustomUser ,CreditBalance,PaymentsActivated,ImageHistory
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import redirect
 from intasend import APIService
@@ -73,7 +73,7 @@ def auth_login(request):
     # Store the user ID in the session
     request.session['user_id'] = user.id
    
-    return redirect('dashboard')
+    return redirect('dashboard', user_id=user.id)
 
 def textimage(request):
     # Get the user ID from session
@@ -100,10 +100,11 @@ def textimage(request):
 
     # Continue with the request and render the response
     prompt = request.POST.get('prompt', False)
+    prompt=prompt +"the image must be realistic,modern  and very high quality and remember the house are for real humans"
     print(prompt)
     payload = {
     "model": "dall-e-3",
-    "prompt": "a big white box with sorrounded with a small black bacground",
+    "prompt": prompt,
     "size": "1024x1024",
     "quality": "standard",
     "n": 1
@@ -131,6 +132,8 @@ def textimage(request):
         # Extract the URL of the generated image
         image_url = response_data["data"][0]["url"]
         print("Generated image URL:", image_url)
+        generatedimage=ImageHistory.objects.create(user_id=user_id,image_url=image_url)
+        generatedimage.save()
         return render(request, "index.html", {"image": image_url ,"credit_balance":credit_balance})
     else:
         return render(request, "index.html", {"error": "kindly try later there is more traffic at the moment" ,"credit_balance":credit_balance})
@@ -193,8 +196,11 @@ def imagetoimage(request):
         data = response.json()
         image_url = data['data'][0]['url']
         print("Generated Image URL:", image_url)
+        generatedimage=ImageHistory.objects.create(user_id=user_id,image_url=image_url)
+        generatedimage.save()
         os.remove(temp_image_path)
         return render(request,"index.html",{"image":image_url,"credit_balance":credit_balance})
+    
     else:
         return render(request, "index.html", {"error": "kindly try later there is more traffic at the moment" ,"credit_balance":credit_balance})
 
@@ -282,6 +288,13 @@ def PaymentCallback(request):
             return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"message": "Transaction state is not complete."})
+    
+def imagehistory(request):
+    user_id = request.session.get('user_id')
+    image_history = ImageHistory.objects.filter(user_id=user_id)
+
+    # Pass image history to the template for rendering
+    return render(request, 'history.html', {'image_history': image_history})
 
 
 

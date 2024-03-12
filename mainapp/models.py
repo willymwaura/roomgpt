@@ -28,7 +28,7 @@ class CreditBalance(models.Model):
 
 class ImageHistory(models.Model):
     user_id = models.IntegerField()
-    image_url = models.URLField()
+    image_url = models.TextField()
 
     class Meta:
         app_label = 'mainapp'

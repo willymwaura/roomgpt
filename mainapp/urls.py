@@ -13,6 +13,7 @@ urlpatterns = [
     path('imagetoimage',views.imagetoimage,name='imagetoimage'),
     path('checkout',views.checkout,name='checkout'),
     path('mpesa_checkout',views.mpesa_checkout,name='mpesa_checkout'),
-    path('callback',views.PaymentCallback,name='callback')
+    path('callback',views.PaymentCallback,name='callback'),
+    path('imagehistory',views.imagehistory,name='imagehistory')
 
 ]

@@ -1,0 +1,120 @@
+ROOMGPT DESIGN DOC
+
+Database models
+
+Users
+1.id
+2.email
+3.password
+
+Credit balances
+1.user_id
+2.balances
+
+3.Image History
+1.user_id
+2.image_url
+
+ARCHITECTURE (API) backend routes
+1 /create_account 
+  POST request
+
+{
+“email”:”w@gmail.com”
+“password” :1234
+
+}
+
+Response
+
+{
+“Success” :”account was created successfully”
+}
+2. /login
+
+POST REQUEST
+{
+“email”:”w@gmail.com”
+“password” :1234
+}
+
+RESPONSE
+If the account exist (200)
+{
+“Id: 1,
+“email”:”w@gmail.com”
+“password” :1234
+}
+If account does not exist
+{
+“error” :user does not exist”
+}
+3. /text_image
+POST REQUEST
+{
+“Text” :”futuristic room “
+}
+
+RESPONSE
+{ 
+“Image_url”: image.jpeg
+}
+
+4./image2image
+POST REQUEST
+
+{
+“base64” :”hghgjjjj245gg “
+}
+
+RESPONSE
+{ 
+“Image_url”: [“image1.jpeg,image2.jpeg”]
+}
+5./payments
+POST request 
+
+{
+“Mpesa_number”:0123344,
+“Email” :”w@gmail.com”,
+“Amount” :450
+}
+6. /images/{id}
+
+GET HTTP REQUEST
+{
+Image_url: [“image1.jpeg,image2.jpeg]
+}
+7. /mpesa_callbackurl
+POST request 
+{
+  "invoice_id": "BRZKGPR",
+  "state": "PROCESSING",
+  "provider": "CARD-PAYMENT",
+  "charges": "0.00",
+  "net_amount": "10.36",
+  "currency": "KES",
+  "value": "10.36",
+  "account": "john.doe@gmail.com",
+  "api_ref": "ISL_faa26ef9-eb08-4353-b125-ec6a8f022815",
+  "host": "https://sandbox.intasend.com",
+  "failed_reason": null,
+  "failed_code": null,
+  "failed_code_link": "https://intasend.com/troubleshooting",
+  "created_at": "2021-08-18T12:33:50.425886+03:00",
+  "updated_at": "2021-08-18T12:33:51.304105+03:00",
+  "challenge": "testnet"
+}
+If transaction state is complete update the credit balance of the account.
+
+
+
+SERVERS
+Railway.app
+
+
+GITHUB
+repo:https://github.com/willymwaura/RoomGPT-API
+
+
+Payment: mpesa api /intasend api

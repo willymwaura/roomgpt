@@ -1,0 +1,25 @@
+<!-- image_history.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image History</title>
+    <!-- Add any necessary CSS stylesheets -->
+</head>
+<body>
+    <h1>Image History</h1>
+
+    <!-- Check if image history is not empty -->
+    {% for image_entry in image_history %}
+    <div class="image-entry">
+        <img src="{{ image_entry.image_url }}" alt="Image" style="max-width: 200px; height: auto;">
+        <a href="{{ image_entry.image_url }}" target="_blank">See Image in full screen</a>
+    </div>
+{% empty %}
+    <p>No image generated yet.</p>
+{% endfor %}
+</body>
+</html>
+
