@@ -26,6 +26,7 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # Make migrations
+#
 
 
 
