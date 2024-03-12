@@ -2,7 +2,7 @@
 from django.http import response
 from django.shortcuts import render
 import requests
-from .models import User  as CustomUser ,CreditBalance,PaymentsActivated
+from mainapp.models import User  as CustomUser ,CreditBalance,PaymentsActivated
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from intasend import APIService
