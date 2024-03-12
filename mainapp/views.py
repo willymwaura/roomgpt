@@ -73,7 +73,7 @@ def auth_login(request):
     # Store the user ID in the session
     request.session['user_id'] = user.id
    
-    return redirect('dashboard', user_id=user.id)
+    return redirect('dashboard')
 
 def textimage(request):
     # Get the user ID from session
