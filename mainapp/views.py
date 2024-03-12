@@ -203,6 +203,9 @@ def mpesa_checkout(request):
             # Return an error if there's an exception
         return render(request,"checkout.html",{"error": "try again later "})
     
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt  
 def PaymentCallback(request):
     data = request.data
     required_fields = ["invoice_id", "state", "account"]
