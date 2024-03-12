@@ -263,7 +263,8 @@ def PaymentCallback(request):
         try:
                 # Get or create credit balance for the account
             phone = data["account"]
-            email=PaymentsActivated.objects.get(phone=phone).email
+            email = PaymentsActivated.objects.filter(phone=phone).latest('id').email
+
 
             user = CustomUser.objects.get(email=email)
 
