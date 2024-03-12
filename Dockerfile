@@ -32,4 +32,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 #CMD python manage.py migrate notifications 
 
-CMD  python manage.py makemigrations &&  python manage.py migrate && gunicorn base.wsgi:application --bind 0.0.0.0:$PORT
+CMD  python manage.py makemigrations &&  python manage.py migrate && gunicorn roomgpt.wsgi:application --bind 0.0.0.0:$PORT
