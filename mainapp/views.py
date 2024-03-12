@@ -3,9 +3,10 @@ from django.http import response
 from django.shortcuts import render
 import requests
 from mainapp.models import User  as CustomUser ,CreditBalance,PaymentsActivated
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import redirect
 from intasend import APIService
+import json
 
 
 # Create your views here.
@@ -207,33 +208,33 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  
 def PaymentCallback(request):
-    data = request.POST
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON data in the request."}, status=400)
     print(data)
-    required_fields = ["invoice_id", "state", "account"]
-    for field in required_fields:
-        if field not in data:
-            print({"error": f"{field} is required in the request."})
+    
 
         # Check if transaction state is complete
-        if data["state"] == "COMPLETE":
-            try:
+    if data["state"] == "COMPLETE":
+        try:
                 # Get or create credit balance for the account
-                email = data["account"]
-                user = CustomUser.objects.get(email=email)
+            email = data["account"]
+            user = CustomUser.objects.get(email=email)
 
                 # Get or create credit balance for the account
-                user_id = user.id
-                credit_balance, created = CreditBalance.objects.get_or_create(user_id=user_id)
+            user_id = user.id
+            credit_balance, created = CreditBalance.objects.get_or_create(user_id=user_id)
                 
                 
                 # Update credit balance
-                credit_balance.balance += float(data["net_amount"])
-                credit_balance.save()
+            credit_balance.balance += float(data["net_amount"])
+            credit_balance.save()
 
-                print("payment for user id",user_id,"for amount ",data["net_amount"],"is complete")
-            except Exception as e:
+            print("payment for user id",user_id,"for amount ",data["net_amount"],"is complete")
+        except Exception as e:
                 return HttpResponse({"error": str(e)})
-        else:
+    else:
             print({"message": "Transaction state is not complete."})
 
 
