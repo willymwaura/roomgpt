@@ -207,7 +207,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  
 def PaymentCallback(request):
-    data = request.data
+    data = request.POST
     required_fields = ["invoice_id", "state", "account"]
     for field in required_fields:
         if field not in data:
