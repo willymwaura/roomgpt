@@ -2,7 +2,7 @@
 from django.http import response
 from django.shortcuts import render
 import requests
-from .models import User  as CustomUser ,CreditBalance
+from .models import User  as CustomUser ,CreditBalance,PaymentsActivated
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from intasend import APIService
@@ -98,7 +98,39 @@ def textimage(request):
     # Continue with the request and render the response
     prompt = request.POST.get('prompt', False)
     print(prompt)
-    return render(request, "index.html", {"image": "https://images.unsplash.com/photo-1537726235470-8504e3beef77?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","credit_balance":credit_balance})
+    payload = {
+    "model": "dall-e-3",
+    "prompt": "a big white box with sorrounded with a small black bacground",
+    "size": "1024x1024",
+    "quality": "standard",
+    "n": 1
+}
+
+    # Define the endpoint URL
+    url = " https://api.openai.com/v1/images/generations"
+
+    # Define your OpenAI API key
+    api_key = "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"
+
+    # Set up the headers
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    # Send the request
+    response = requests.post(url, headers=headers, json=payload)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the response JSON
+        response_data = response.json()
+        # Extract the URL of the generated image
+        image_url = response_data["data"][0]["url"]
+        print("Generated image URL:", image_url)
+        return render(request, "index.html", {"image": image_url ,"credit_balance":credit_balance})
+    else:
+        return render(request, "index.html", {"error": "kindly try later there is more traffic at the moment" ,"credit_balance":credit_balance})
 
 def imagetoimage(request):
     user_id = request.session.get('user_id')
@@ -144,6 +176,8 @@ def mpesa_checkout(request):
     email = request.POST.get('email', False)
     amount = request.POST.get('amount', False)
     print(amount)
+    payment_instance=PaymentsActivated(phone=phone,email=email,amount=amount)
+    payment_instance.save()
     
     if int(amount) < 50:
         return render (request,"checkout.html",{"error": "minimum amount to pay is 50 kshs."})
