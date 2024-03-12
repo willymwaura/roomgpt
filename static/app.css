@@ -1,0 +1,33 @@
+body{
+    background-color: grey;
+}
+input{
+    width: 400px;
+    height: 40px;
+    background-color: royalblue;
+    font-weight: 1000;
+    font-size: medium;
+}
+form{
+    border-bottom: 50px;
+
+}
+.none{
+    width: auto;
+    height: 350px;
+}
+.two{
+    position: relative;
+    left: 35%;
+
+}
+p{
+    position: relative;
+    left: 40%;
+    font-size: 40px;
+    padding-top: 15%;
+
+}
+.search{
+    background-color:rosybrown;
+}

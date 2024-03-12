@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interior Design App</title>
+    <!-- Add any necessary stylesheets or meta tags here -->
+    <style>
+        /* Add your CSS styles here */
+        * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+body {
+  position: relative;
+  background-color: black;
+  color: white;
+}
+.sidebar {
+  background-color: rgb(37, 49, 56);
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+h2 {
+  font-weight: 900px;
+  margin-bottom: 30px;
+  color: #ffffff;
+  font-size: 22px;
+}
+.sidebar-links {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.sidebar-links .link-text {
+  margin-left: 3px;
+  color: white;
+}
+.sidebar-link {
+  text-decoration: none;
+  color: white;
+}
+.sidebar-links:hover {
+  background-color: rgba(182, 182, 221, 0.137);
+  border-radius: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.sidebar-links.clicked {
+  background-color: rgb(182, 182, 221);
+  border-radius: 10px;
+  margin-right: 10px;
+}
+.navigation-bar {
+  position: relative;
+  background-color: rgb(37, 49, 56);
+  color: white;
+  padding: 20px;
+  margin-top: 20px;
+  margin-left: 300px;
+  margin-right: 200px;
+  border-radius: 8px;
+  display: flex;
+}
+.nav-descr {
+  display: block;
+  margin-right: 15px;
+}
+h1 {
+  font-weight: 500;
+  font-size: 22px;
+  margin-bottom: 3px;
+}
+p {
+  font-weight: 100;
+  color: #cabbbb64;
+  font-size: 14px;
+}
+.design-button {
+  background-color: rgb(92, 65, 190);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.text-input {
+  margin-top: 20px;
+  margin-left: 300px;
+}
+.text-input input[type="text"] {
+  padding: 10px;
+  width: 400px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.text-input button[type="submit"] {
+  padding: 10px 20px;
+  background-color: rgb(92, 65, 190);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.main-content {
+  margin-left: 280px;
+  padding: 18px;
+}
+.dropdown {
+  width: calc(25% - 5px);
+  padding: 8px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  background-color: rgb(37, 49, 56);
+  color: white;
+  border-radius: 4px;
+}
+.func {
+  display: flex;
+}
+.upload-container {
+  padding: 5px;
+  margin-right: 5px;
+}
+.upload-label {
+  display: block;
+  padding: 100px;
+  border: 2.5px dashed #aaa;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0;
+  width: fit-content;
+}
+.upload-label:hover {
+  background-color: rgb(37, 49, 56);
+}
+.dashed-box {
+  display: inline-block;
+  width: 400px;
+  height: 300px;
+  border: 2.5px dashed #aaa;
+  border-radius: 8px;
+  margin-left: 20px;
+}
+.output-container {
+  padding: 30px;
+  margin-left: 5px;
+}
+.output-image-container {
+  display: inline-block;
+  width: 350px;
+  height: 225px;
+  border: 2.5px dashed #aaa;
+  border-radius: 8px;
+  margin-left: 20px;
+  position: relative;
+  text-align: center;
+}
+.output-image-container p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px; 
+  color: white;
+}
+#output-image {
+  max-width: 100%;
+  height: auto;
+}
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Interior Design</h2>
+        <div class="sidebar-links" id="home-link">
+            <box-icon name='home' color="white"></box-icon>
+            <a href="dashboard" class="sidebar-link">
+              <span class="link-text">Home</span>
+          </a>
+        </div>
+        <div class="history-container">
+            <!-- History entries will be dynamically added here -->
+        </div>
+        <div class="sidebar-links" id="history-link">
+            <box-icon name='history' color="white"></box-icon>
+            <span class="link-text">History</span>
+            <!-- History entries will be dynamically added here -->
+        </div>
+        <div class="sidebar-links" id="history-link">
+          <box-icon name='history' color="white"></box-icon>
+          <a href="checkout" class="sidebar-link">
+            <span class="link-text">Recharge my account</span>
+      </div>
+    </div>
+    <div class="navigation-bar">
+        <div class="nav-descr">
+            <h1>Upload A Photo Or Image</h1>
+            <p>Enhance the appearance of your space by effortlessly uploading a photo or image of the room you wish to transform.</p>
+        </div>
+        <div>
+            <button class="design-button">Credit balance : {{credit_balance}}</button>
+        </div>
+    </div>
+    <form method="post" action="/textimage">
+        {% csrf_token %} 
+        <div class="text-input">
+            <input type="text" placeholder="Describe your room with words and get the design..." name="prompt" />
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
+    
+    <div class="main-content">
+        
+        
+        <div class="func">
+          <form method="post" action="imagetoimage" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="upload-container">
+              <input type="file" name="image" id="image-upload" onchange="updateUploadLabel(this)" />
+                <label for="image-upload" class="upload-label">Click To Upload</label>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+            <div class="output-container">
+                <div class="output-image-container">
+                    {% if image %}
+                        <a href="{{ image }}" target="_blank">
+                            <img src="{{ image }}" alt="AI Generated Output" id="output-image" />
+                        </a>
+                    {% else %}
+                        <p>AI Generated Output Goes Here</p>
+                    {% endif %}
+                </div>
+            </div>
+    </div>
+
+    <script>
+      function updateUploadLabel(input) {
+          var label = document.getElementById('upload-label');
+          if (input.value !== '') {
+              label.innerText = 'File uploaded';
+          } else {
+              label.innerText = 'Click To Upload';
+          }
+      }
+      </script>
+      <script>
+        // Function to show alert for errors
+        function showAlert() {
+            // Get the error message from the rendered HTML
+            var errorMessage = "{{ error }}";
+
+            // Check if there is an error message
+            if (errorMessage) {
+                // Show an alert with the error message
+                alert(errorMessage);
+            }
+        }
+
+        // Call the showAlert function when the page finishes loading
+        window.onload = showAlert;
+    </script>
+
+</body>
+
+
+  
+</html>
