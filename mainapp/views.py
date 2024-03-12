@@ -7,6 +7,8 @@ from django.http import HttpResponse,JsonResponse
 from django.shortcuts import redirect
 from intasend import APIService
 import json
+from PIL import Image
+import os
 
 
 # Create your views here.
@@ -157,7 +159,44 @@ def imagetoimage(request):
     print(credit_balance)
     uploaded_image = request.FILES['image']
     print("Uploaded file name:", uploaded_image.name)
-    return render(request,"index.html",{"image":"https://images.unsplash.com/photo-1613685301586-4f2b15f0ccd4?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D","credit_balance":credit_balance})
+    api_key = "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"
+
+    # Define the URL for the API endpoint
+    url = "https://api.openai.com/v1/images/variations"
+
+    # Open the image file and convert it to RGBA format
+    image = Image.open(uploaded_image).convert('RGBA')
+
+    # Save the converted image to a temporary file
+    temp_image_path = 'temp_image.png'
+    image.save(temp_image_path)
+
+    # Set the parameters for the request
+    params = {
+        
+        'n': 1,
+        'size': '1024x1024',
+    }
+
+    # Set headers with API key
+    headers = {
+        'Authorization': f'Bearer {api_key}'
+    }
+
+    # Open the temporary image file
+    with open(temp_image_path, 'rb') as image_file:
+        # Send POST request to OpenAI's image edits API
+        response = requests.post(url, headers=headers, files={'image': image_file}, data=params)
+
+    # Process response
+    if response.status_code == 200:
+        data = response.json()
+        image_url = data['data'][0]['url']
+        print("Generated Image URL:", image_url)
+        os.remove(temp_image_path)
+        return render(request,"index.html",{"image":image_url,"credit_balance":credit_balance})
+    else:
+        return render(request, "index.html", {"error": "kindly try later there is more traffic at the moment" ,"credit_balance":credit_balance})
 
 def dashboard(request):
     user_id = request.session.get('user_id')
@@ -239,9 +278,9 @@ def PaymentCallback(request):
 
             print("payment for user id",user_id,"for amount ",data["net_amount"],"is complete")
         except Exception as e:
-                return HttpResponse({"error": str(e)})
+            return JsonResponse({"error": str(e)}, status=500)
     else:
-            print({"message": "Transaction state is not complete."})
+        return JsonResponse({"message": "Transaction state is not complete."})
 
 
 
