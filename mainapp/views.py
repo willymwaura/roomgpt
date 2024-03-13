@@ -50,7 +50,7 @@ def auth_login(request):
     email = request.POST.get('email',False)
     password = request.POST.get('password',False)
 
-        # Check if email and password are provided
+        # Check if an email and password are provided
     if not email or not password:
         
         message= "Email and password are required."
@@ -61,20 +61,20 @@ def auth_login(request):
         user = CustomUser.objects.get(email=email,password=password)
     except CustomUser.DoesNotExist:
         
-        message= "User does not exist."
+        message= "User does not exist.You need to sign up please."
         return render(request, "login.html", {"message": message})
 
         # Check if password is correct
     if user.password != password:
         
-        message= "Incorrect password."
+        message= "You provided an incorrect password."
         return render(request, "login.html", {"message": message})
 
         # If everything is correct, respond with user details
     # Store the user ID in the session
     request.session['user_id'] = user.id
    
-    return redirect('dashboard', user_id=user.id)
+    return redirect('dashboard')
 
 def textimage(request):
     # Get the user ID from session
@@ -89,7 +89,7 @@ def textimage(request):
         credit_balance = CreditBalance.objects.get(user_id=user_id)
         if credit_balance.balance < 10:
             # Not enough credit balance, render index.html with a message
-            return render(request, "index.html", {"error": "Not enough credit recharge your account.","credit_balance":credit_balance.balance})
+            return render(request, "index.html", {"error": "Not enough credit,recharge your account.","credit_balance":credit_balance.balance})
         else:
             # Subtract 10 credits from the user's balance
             credit_balance.balance -= 10
