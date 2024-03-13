@@ -16,6 +16,7 @@ RUN pip install --upgrade setuptools
 
 RUN pip install gunicorn
 RUN pip install Pillow
+RUN pip install python-dotenv
 
 
 
