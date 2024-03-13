@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from intasend import APIService
 import json
 from PIL import Image
+from dotenv import load_dotenv
 import os
 
 
@@ -114,7 +115,7 @@ def textimage(request):
     url = " https://api.openai.com/v1/images/generations"
 
     # Define your OpenAI API key
-    api_key = "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"
+    api_key = os.getenv('OPENAI_API_KEY')
 
     # Set up the headers
     headers = {
@@ -162,7 +163,7 @@ def imagetoimage(request):
     print(credit_balance)
     uploaded_image = request.FILES['image']
     print("Uploaded file name:", uploaded_image.name)
-    api_key = "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"
+    api_key = os.getenv('OPENAI_API_KEY')
 
     # Define the URL for the API endpoint
     url = "https://api.openai.com/v1/images/variations"
