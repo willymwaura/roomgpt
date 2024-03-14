@@ -105,16 +105,16 @@ POST request
   "updated_at": "2021-08-18T12:33:51.304105+03:00",
   "challenge": "testnet"
 }
-If transaction state is complete update the credit balance of the account.
+If the transaction state is complete update the credit balance of the account.
 
 
 
 SERVERS
-Railway.app
+Railway. app
 
 
 GITHUB
 repo:https://github.com/willymwaura/RoomGPT-API
-
+Figma link:[("https://www.figma.com/file/Kj64kQh8enEcblVNExGVnd/RoomGPT?type=design&node-id=0-1&mode=design&t=l8ZvI7zLm7xHcxWj-0")]
 
 Payment: mpesa api /intasend api
