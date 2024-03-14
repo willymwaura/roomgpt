@@ -64,7 +64,7 @@ RESPONSE
 POST REQUEST
 
 {
-“base64” :”hghgjjjj245gg “
+“base64” :”hghgiytghjjjjj245gg “
 }
 
 RESPONSE
@@ -75,7 +75,7 @@ RESPONSE
 POST request 
 
 {
-“Mpesa_number”:0123344,
+“Mpesa_number”:0123344556,
 “Email” :”w@gmail.com”,
 “Amount” :450
 }
