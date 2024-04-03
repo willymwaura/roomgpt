@@ -75,7 +75,8 @@ def auth_login(request):
     request.session['user_id'] = user.id
    
     return redirect('dashboard')
-
+    
+@csrf_exempt  
 def textimage(request):
     # Get the user ID from session
     user_id = request.session.get('user_id')
@@ -138,7 +139,7 @@ def textimage(request):
         return render(request, "index.html", {"image": image_url ,"credit_balance":credit_balance})
     else:
         return render(request, "index.html", {"error": "kindly try later there is more traffic at the moment" ,"credit_balance":credit_balance})
-
+@csrf_exempt
 def imagetoimage(request):
     user_id = request.session.get('user_id')
 
