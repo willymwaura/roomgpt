@@ -1,4 +1,4 @@
-
+from django.views.decorators.csrf import csrf_exempt
 from django.http import response
 from django.shortcuts import render
 import requests
